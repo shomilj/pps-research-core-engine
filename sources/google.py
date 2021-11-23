@@ -1,18 +1,13 @@
-from datetime import datetime
-from io import StringIO
-from os import times
 import os
-from typing import Any, Dict, List, Optional, Set
+from typing import Any, Dict, List, Set
 from models.event import Event
 from sources.base import BaseSource
-import json
 import vobject
 import re
 from ics import Calendar
 import mailbox
 import tempfile
 from tqdm import tqdm
-from pprint import pprint
 
 from sources.utils.gmail import GmailMboxMessage
 
@@ -24,10 +19,10 @@ def clean_names(name): return re.sub(' +', ' ', name).strip()
 
 class GoogleSource(BaseSource):
 
-    def __init__(self, dataset: Dict[str, Any]) -> None:
+    def __init__(self, dataset: Dict[str, Any], full_name: str) -> None:
         self.contacts: List[Dict] = []
         self.email_map: Dict[str, str] = {}
-        super().__init__(dataset)
+        super().__init__(dataset, full_name)
 
     def get_events(self) -> List[Event]:
         self.parse_contacts()

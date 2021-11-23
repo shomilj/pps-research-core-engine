@@ -9,8 +9,9 @@ class BaseSource:
     All sources inherit from this base source.
     """
 
-    def __init__(self, dataset: Dict[str, Any]) -> None:
+    def __init__(self, dataset: Dict[str, Any], full_name: str) -> None:
         self.dataset = dataset
+        self.full_name = full_name
         self.events: List[Event] = []
 
     @abstractmethod
