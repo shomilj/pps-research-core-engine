@@ -1,6 +1,5 @@
 from datetime import datetime
-from time import time
-from typing import Any, Dict, Optional, Set, Tuple, cast
+from typing import Any, Dict, Optional, Set, cast
 
 import pytz
 
@@ -41,10 +40,23 @@ class Event:
         TODO: Build a general-purpose timestamp parser here. All timestamps should be represented in GMT and as
         epoch time (seconds since 1970). The input may be a string, an integer, or a double.
         """
-        if type(timestamp) == datetime:
+        if isinstance(timestamp, datetime):
             timestamp = cast(datetime, timestamp)
             seconds = timestamp.replace(tzinfo=pytz.UTC).timestamp()
         else:
             seconds = timestamp
 
         return seconds
+
+    def to_json(self):
+        return {
+            'company': self.company,
+            'source': self.source,
+            'key': self.key,
+            'title': self.title,
+            'timestamp': self.timestamp,
+            'content': self.content,
+            'metadata': self.metadata,
+            'names': self.names,
+            'locations': self.location
+        }

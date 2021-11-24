@@ -1,18 +1,18 @@
-from os import times
 from typing import Any, Dict, List, Optional, Set
-from models.event import Event
-from sources.base import BaseSource
-import json
+
+from examples.search.models.event import Event
+from lens.sources.FacebookSource import FacebookSource
 
 COMPANY = 'Facebook'
 
 
-class FacebookSource(BaseSource):
+class FacebookIndex:
 
-    def __init__(self, dataset: Dict[str, Any], full_name: str) -> None:
+    def __init__(self, source: FacebookSource, full_name: str) -> None:
+        self.source = source
+        self.full_name = full_name
+        self.events: List[Event] = []
         self.friends: Set[str] = set()
-        super().__init__(dataset, full_name)
-        print('\n'.join(reversed(sorted(dataset.keys()))))
 
     def get_events(self) -> List[Event]:
         self.parse_friends()
@@ -229,10 +229,10 @@ class FacebookSource(BaseSource):
         ])
 
     def parse_messages(self):
-        for thread in self.dataset.keys():
+        for thread in self.source.glob('*.json'):
             if not thread.endswith('message_1.json'):
                 continue
-            thread = json.loads(self.dataset[thread])
+            thread = self.source.read_json(thread)
             for message in thread.get('messages'):
                 thread_metadata = {k: v for k,
                                    v in thread.items() if k != 'messages'}
@@ -414,10 +414,4 @@ class FacebookSource(BaseSource):
                 ])
 
     def safe_load_data(self, path: str, node: str) -> Optional[List[Dict[str, Any]]]:
-        if path in self.dataset:
-            data = self.dataset[path]
-            formatted = json.loads(data)
-            if node in formatted:
-                return formatted[node]
-
-        raise ValueError('Path not found: ' + path)
+        return self.source.read_node(path=path, node=node)

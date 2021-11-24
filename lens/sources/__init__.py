@@ -1,0 +1,2 @@
+class BaseSource:
+    pass
