@@ -5,10 +5,4 @@
   "python.linting.enabled": true,
   "python.linting.pylintEnabled": true,
   "python.linting.pylintArgs": ["--enable=W0614", "--max-line-length=120"],
-  "python.autoComplete.extraPaths": [
-    "./demo"
-  ],
-  "python.analysis.extraPaths": [
-    "./demo"
-  ]
 }

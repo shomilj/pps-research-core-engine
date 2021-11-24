@@ -11,10 +11,12 @@ application code are protected during processing-time due to the secure hardware
 
 
 from typing import Any, Dict, List, Optional
+from examples.search.indexers.google import GoogleIndex
 
 from lens.sources.FacebookSource import FacebookSource
 from examples.search.indexers.facebook import FacebookIndex
 from examples.search.models.event import Event
+from lens.sources.GoogleSource import GoogleSource
 
 
 class SearchEngine:
@@ -48,15 +50,18 @@ class SearchEngine:
         print('The possible event types are:')
         print('\n- '.join(sorted(event_types)))
 
-    def preprocess(self, facebook_source: FacebookSource):
+    def preprocess(self, facebook_source: FacebookSource, google_source: GoogleSource):
         """
         Lens allows modules to do some preprocessing of personal data (e.g. index-building). This can then be saved to
         either the module's in-memory state (e.g. instance variables). The underlying engine takes care of serializing
         the in-memory state efficiently, and it's re-built when a user makes a query.
         """
-        facebook_index = FacebookIndex(
+
+        self.events.extend(FacebookIndex(
             source=facebook_source,
             full_name=self.config.get('full_name')
-        )
+        ).get_events())
 
-        self.events.extend(facebook_index.get_events())
+        self.events.extend(GoogleIndex(
+            source=google_source
+        ).get_events())

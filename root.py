@@ -5,6 +5,8 @@ from lens.sources.FacebookSource import FacebookSource
 import pickle
 import os
 
+from lens.sources.GoogleSource import GoogleSource
+
 STORAGE_KEY = '5F254E10-677C-4D91-9CC8-00DC5AEF7F5F'
 USER_ID = 'shomil@berkeley.edu'
 
@@ -28,19 +30,18 @@ download_from_blob_storage(
 
 # Demo of simple Python serialization cache for in-memory search index
 
-cache = 'cache/search.pickle'
+# cache = 'cache/search.pickle'
 
-if os.path.exists(cache):
-    with open(cache, 'rb') as file:
-        search = pickle.load(file)
-else:
-    search = SearchEngine()
-    search.preprocess(
-        facebook_source=FacebookSource(root=TEMP_DIR + 'facebook/')
-    )
-    with open(cache, 'wb') as file:
-        pickle.dump(search, file)
+# try:
+#     with open(cache, 'rb') as file:
+#         search = pickle.load(file)
 
+# except:
+search = SearchEngine()
+search.preprocess(
+    facebook_source=FacebookSource(root=TEMP_DIR + 'facebook/'),
+    google_source=GoogleSource(root=TEMP_DIR + 'google/')
+)
 
 search.help()
 
@@ -48,6 +49,6 @@ events = search.query({
     'person': 'John'
 })
 
-for e in search.events:
-    if 'John' in str(e.to_json()):
-        print(e.to_json())
+# for e in search.events:
+#     if 'John' in str(e.to_json()):
+#         print(e.to_json())
