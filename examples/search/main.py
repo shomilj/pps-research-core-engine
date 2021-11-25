@@ -9,14 +9,16 @@ in a confidential computing node on Microsoft Azure, where the confidentiality a
 application code are protected during processing-time due to the secure hardware provided by Intel SGX enclaves.
 """
 
-
-from typing import Any, Dict, List, Optional
-from examples.search.indexers.google import GoogleIndex
-
+from typing import Any, Dict, List
+from examples.search.index.google import GoogleIndex
 from lens.sources.FacebookSource import FacebookSource
-from examples.search.indexers.facebook import FacebookIndex
+from examples.search.index.facebook import FacebookIndex
 from examples.search.models.event import Event
 from lens.sources.GoogleSource import GoogleSource
+from tqdm import tqdm
+
+import os
+import os.path
 
 
 class SearchEngine:

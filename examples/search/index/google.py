@@ -8,7 +8,7 @@ import tempfile
 from tqdm import tqdm
 
 from typing import Any, Dict, List, Set
-from examples.search.indexers.helpers.gmail import GmailMboxMessage
+from examples.search.index.helpers.gmail import GmailMboxMessage
 
 from examples.search.models.event import Event
 from lens.sources.GoogleSource import GoogleSource
