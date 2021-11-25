@@ -1,4 +1,8 @@
+zips/*
+
 .DS_Store
+.env
+*.secret
 
 cache/*
 __pycache__/*
